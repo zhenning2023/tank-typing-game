@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120">
+  <rect x="5" y="35" width="190" height="60" fill="#8a9a7a" stroke="#6a7a5a" stroke-width="2"/>
+  <rect x="10" y="10" width="140" height="50" fill="#7a8a6a" stroke="#6a7a5a" stroke-width="2"/>
+  <rect x="30" y="-5" width="80" height="40" fill="#6a7a5a" stroke="#5a6a4a" stroke-width="2"/>
+  <circle cx="10" cy="65" r="20" fill="#6a6a6a" stroke="#5a5a5a" stroke-width="2"/>
+  <circle cx="45" cy="65" r="20" fill="#6a6a6a" stroke="#5a5a5a" stroke-width="2"/>
+  <circle cx="80" cy="65" r="20" fill="#6a6a6a" stroke="#5a5a5a" stroke-width="2"/>
+  <circle cx="115" cy="65" r="20" fill="#6a6a6a" stroke="#5a5a5a" stroke-width="2"/>
+  <circle cx="150" cy="65" r="20" fill="#6a6a6a" stroke="#5a5a5a" stroke-width="2"/>
+  <circle cx="180" cy="65" r="20" fill="#6a6a6a" stroke="#5a5a5a" stroke-width="2"/>
+  <rect x="150" y="15" width="25" height="16" fill="#5a5a5a"/>
+  <text x="100" y="110" font-family="Arial" font-size="12" fill="#ffd700" text-anchor="middle">Panther</text>
+</svg>

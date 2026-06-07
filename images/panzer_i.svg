@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120">
+  <rect x="10" y="40" width="180" height="40" fill="#4a5a3a" stroke="#2a3a1a" stroke-width="2"/>
+  <rect x="30" y="30" width="100" height="30" fill="#3a4a2a" stroke="#2a3a1a" stroke-width="2"/>
+  <rect x="50" y="15" width="40" height="20" fill="#2a3a1a" stroke="#1a2a0a" stroke-width="2"/>
+  <circle cx="30" cy="60" r="12" fill="#2a2a2a" stroke="#1a1a1a" stroke-width="2"/>
+  <circle cx="60" cy="60" r="12" fill="#2a2a2a" stroke="#1a1a1a" stroke-width="2"/>
+  <circle cx="90" cy="60" r="12" fill="#2a2a2a" stroke="#1a1a1a" stroke-width="2"/>
+  <circle cx="120" cy="60" r="12" fill="#2a2a2a" stroke="#1a1a1a" stroke-width="2"/>
+  <circle cx="150" cy="60" r="12" fill="#2a2a2a" stroke="#1a1a1a" stroke-width="2"/>
+  <circle cx="170" cy="60" r="12" fill="#2a2a2a" stroke="#1a1a1a" stroke-width="2"/>
+  <rect x="130" y="35" width="15" height="8" fill="#1a1a1a"/>
+  <text x="100" y="110" font-family="Arial" font-size="12" fill="#ffd700" text-anchor="middle">Panzer I</text>
+</svg>

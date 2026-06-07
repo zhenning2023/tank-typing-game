@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120">
+  <rect x="0" y="30" width="200" height="70" fill="#a8a898" stroke="#888878" stroke-width="2"/>
+  <rect x="5" y="0" width="155" height="60" fill="#989888" stroke="#888878" stroke-width="2"/>
+  <rect x="25" y="-15" width="95" height="50" fill="#888878" stroke="#787868" stroke-width="2"/>
+  <circle cx="5" cy="65" r="24" fill="#888888" stroke="#787878" stroke-width="2"/>
+  <circle cx="50" cy="65" r="24" fill="#888888" stroke="#787878" stroke-width="2"/>
+  <circle cx="95" cy="65" r="24" fill="#888888" stroke="#787878" stroke-width="2"/>
+  <circle cx="140" cy="65" r="24" fill="#888888" stroke="#787878" stroke-width="2"/>
+  <circle cx="175" cy="65" r="24" fill="#888888" stroke="#787878" stroke-width="2"/>
+  <circle cx="195" cy="65" r="24" fill="#888888" stroke="#787878" stroke-width="2"/>
+  <text x="100" y="110" font-family="Arial" font-size="12" fill="#ffd700" text-anchor="middle">Jagdpanther</text>
+</svg>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>坦克打字游戏 - Tank Typing Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <h1>🎮 坦克打字游戏</h1>
+            <p class="subtitle">二战德国坦克进阶挑战</p>
+        </header>
+
+        <div id="start-screen" class="screen active">
+            <div class="tank-display">
+                <img class="tank-icon" src="images/panzer_i.svg" alt="Panzer I">
+                <h2>准备好开始了吗？</h2>
+                <p>从基础键位练习开始，逐步解锁强大的二战德国坦克！</p>
+                <p style="color: #ffd700; font-size: 0.9rem;">适合10岁儿童的打字训练游戏</p>
+                
+                <div id="user-section" style="margin-top: 20px;">
+                    <div id="user-selection">
+                        <p style="color: #fff; margin-bottom: 10px;">选择用户：</p>
+                        <select id="user-select" style="padding: 10px; font-size: 1rem; border-radius: 5px; border: 2px solid #ffd700; background: rgba(255,255,255,0.1); color: #fff; margin-bottom: 10px;">
+                            <option value="">-- 选择用户 --</option>
+                        </select>
+                        <button id="create-user-btn" class="btn btn-secondary" style="margin-left: 10px;">新建用户</button>
+                    </div>
+                    <div id="create-user-form" style="display: none; margin-top: 15px;">
+                        <input type="text" id="new-username" placeholder="输入用户名" style="padding: 10px; font-size: 1rem; border-radius: 5px; border: 2px solid #ffd700; background: rgba(255,255,255,0.1); color: #fff; margin-right: 10px;">
+                        <button id="save-user-btn" class="btn btn-secondary">保存</button>
+                        <button id="cancel-user-btn" class="btn btn-secondary" style="margin-left: 10px;">取消</button>
+                    </div>
+                </div>
+                
+                <button id="start-btn" class="btn btn-primary" style="margin-top: 20px;">开始游戏</button>
+            </div>
+        </div>
+
+        <div id="game-screen" class="screen hidden">
+            <div class="game-info">
+                <div class="info-box">
+                    <span class="label">等级:</span>
+                    <span id="level" class="value">1</span>
+                </div>
+                <div class="info-box">
+                    <span class="label">分数:</span>
+                    <span id="score" class="value">0</span>
+                </div>
+                <div class="info-box">
+                    <span class="label">坦克:</span>
+                    <span id="current-tank" class="value">Panzer I</span>
+                </div>
+                <div class="info-box">
+                    <span class="label">进度:</span>
+                    <span id="progress" class="value">0/10</span>
+                </div>
+            </div>
+
+            <div class="virtual-keyboard">
+                <h3 style="text-align: center; color: #ffd700; margin-bottom: 15px; font-size: 1rem;">虚拟键盘 - 按键提示</h3>
+                <div class="keyboard-row">
+                    <div class="key" data-key="q">Q</div>
+                    <div class="key" data-key="w">W</div>
+                    <div class="key" data-key="e">E</div>
+                    <div class="key" data-key="r">R</div>
+                    <div class="key" data-key="t">T</div>
+                    <div class="key" data-key="y">Y</div>
+                    <div class="key" data-key="u">U</div>
+                    <div class="key" data-key="i">I</div>
+                    <div class="key" data-key="o">O</div>
+                    <div class="key" data-key="p">P</div>
+                </div>
+                <div class="keyboard-row">
+                    <div class="key" data-key="a">A</div>
+                    <div class="key" data-key="s">S</div>
+                    <div class="key" data-key="d">D</div>
+                    <div class="key" data-key="f">F</div>
+                    <div class="key" data-key="g">G</div>
+                    <div class="key" data-key="h">H</div>
+                    <div class="key" data-key="j">J</div>
+                    <div class="key" data-key="k">K</div>
+                    <div class="key" data-key="l">L</div>
+                    <div class="key" data-key=";">;</div>
+                </div>
+                <div class="keyboard-row">
+                    <div class="key" data-key="z">Z</div>
+                    <div class="key" data-key="x">X</div>
+                    <div class="key" data-key="c">C</div>
+                    <div class="key" data-key="v">V</div>
+                    <div class="key" data-key="b">B</div>
+                    <div class="key" data-key="n">N</div>
+                    <div class="key" data-key="m">M</div>
+                </div>
+            </div>
+
+            <div class="tank-display">
+                <img id="tank-image" class="tank-visual" src="" alt="Tank Image">
+                <div id="tank-name" class="tank-name">Panzer I</div>
+                <div id="tank-description" class="tank-description">轻型坦克 - 入门级</div>
+                <div id="finger-hint" class="finger-hint"></div>
+            </div>
+
+            <div class="typing-area">
+                <div id="word-display" class="word-display">点击开始</div>
+                <input type="text" id="word-input" class="word-input" placeholder="输入单词..." autocomplete="off" autofocus>
+                <div id="feedback" class="feedback"></div>
+            </div>
+
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+        </div>
+
+        <div id="level-complete-screen" class="screen hidden">
+            <div class="tank-display">
+                <div class="tank-icon">🏆</div>
+                <h2>等级完成！</h2>
+                <p>恭喜！你解锁了新坦克！</p>
+                <div id="new-tank-info" class="new-tank-info"></div>
+                <button id="next-level-btn" class="btn btn-primary">下一关</button>
+            </div>
+        </div>
+
+        <div id="game-over-screen" class="screen hidden">
+            <div class="tank-display">
+                <div class="tank-icon">💥</div>
+                <h2>游戏结束</h2>
+                <p>最终分数: <span id="final-score">0</span></p>
+                <p>达到等级: <span id="final-level">1</span></p>
+                <button id="restart-btn" class="btn btn-primary">重新开始</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="tank-data.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

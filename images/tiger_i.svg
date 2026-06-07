@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120">
+  <rect x="0" y="35" width="200" height="65" fill="#9a9a8a" stroke="#7a7a6a" stroke-width="2"/>
+  <rect x="5" y="5" width="150" height="55" fill="#8a8a7a" stroke="#7a7a6a" stroke-width="2"/>
+  <rect x="25" y="-10" width="90" height="45" fill="#7a7a6a" stroke="#6a6a5a" stroke-width="2"/>
+  <circle cx="5" cy="68" r="22" fill="#7a7a7a" stroke="#6a6a6a" stroke-width="2"/>
+  <circle cx="45" cy="68" r="22" fill="#7a7a7a" stroke="#6a6a6a" stroke-width="2"/>
+  <circle cx="85" cy="68" r="22" fill="#7a7a7a" stroke="#6a6a6a" stroke-width="2"/>
+  <circle cx="125" cy="68" r="22" fill="#7a7a7a" stroke="#6a6a6a" stroke-width="2"/>
+  <circle cx="165" cy="68" r="22" fill="#7a7a7a" stroke="#6a6a6a" stroke-width="2"/>
+  <circle cx="195" cy="68" r="22" fill="#7a7a7a" stroke="#6a6a6a" stroke-width="2"/>
+  <rect x="155" y="10" width="28" height="18" fill="#6a6a6a"/>
+  <text x="100" y="110" font-family="Arial" font-size="12" fill="#ffd700" text-anchor="middle">Tiger I</text>
+</svg>
