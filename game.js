@@ -12,6 +12,24 @@ let gameState = {
 // 用户管理
 let users = [];
 
+// 检查localStorage是否可用
+function isLocalStorageAvailable() {
+    try {
+        const test = 'test';
+        localStorage.setItem(test, test);
+        localStorage.removeItem(test);
+        return true;
+    } catch (e) {
+        console.error('localStorage is not available:', e);
+        return false;
+    }
+}
+
+// 在页面加载时检查localStorage
+if (!isLocalStorageAvailable()) {
+    alert('警告：您的浏览器不支持localStorage或已禁用。游戏进度和用户数据将无法保存！\n\n请检查浏览器设置，确保启用了本地存储功能。');
+}
+
 // 音效系统
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -325,7 +343,10 @@ function saveProgress() {
         level: gameState.level,
         score: gameState.score
     };
-    localStorage.setItem(`tankTypingGameProgress_${gameState.currentUser}`, JSON.stringify(progress));
+    const key = `tankTypingGameProgress_${gameState.currentUser}`;
+    console.log('Saving progress for user:', gameState.currentUser, progress);
+    localStorage.setItem(key, JSON.stringify(progress));
+    console.log('Progress saved successfully');
 }
 
 // 加载进度
@@ -345,19 +366,26 @@ function loadProgress(username) {
 // 加载用户列表
 function loadUsers() {
     const savedUsers = localStorage.getItem('tankTypingGameUsers');
+    console.log('Loading users from localStorage:', savedUsers);
     if (savedUsers) {
         try {
             users = JSON.parse(savedUsers);
+            console.log('Loaded users:', users);
         } catch (e) {
             console.error('Failed to load users:', e);
             users = [];
         }
+    } else {
+        console.log('No saved users found in localStorage');
+        users = [];
     }
 }
 
 // 保存用户列表
 function saveUsers() {
+    console.log('Saving users to localStorage:', users);
     localStorage.setItem('tankTypingGameUsers', JSON.stringify(users));
+    console.log('Users saved successfully');
 }
 
 // 更新用户选择下拉框
