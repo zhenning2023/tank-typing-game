@@ -40,6 +40,11 @@
         </div>
 
         <div id="game-screen" class="screen hidden">
+            <!-- 连击计数器 -->
+            <div id="combo-counter" class="combo-counter">
+                🔥 <span id="combo-count">0</span> 连击
+            </div>
+
             <div class="game-info">
                 <div class="info-box">
                     <span class="label">等级:</span>
@@ -119,6 +124,11 @@
                 <div class="tank-icon">🏆</div>
                 <h2>等级完成！</h2>
                 <p>恭喜！你解锁了新坦克！</p>
+                <div id="star-rating" style="margin: 20px 0;">
+                    <span class="star empty">⭐</span>
+                    <span class="star empty">⭐</span>
+                    <span class="star empty">⭐</span>
+                </div>
                 <div id="new-tank-info" class="new-tank-info"></div>
                 <button id="next-level-btn" class="btn btn-primary">下一关</button>
             </div>

@@ -6,7 +6,10 @@ let gameState = {
     words: [],
     currentTank: null,
     isPlaying: false,
-    currentUser: null
+    currentUser: null,
+    combo: 0,
+    maxCombo: 0,
+    mistakes: 0
 };
 
 // 用户管理
@@ -103,7 +106,10 @@ const elements = {
     saveUserBtn: document.getElementById('save-user-btn'),
     cancelUserBtn: document.getElementById('cancel-user-btn'),
     userSelection: document.getElementById('user-selection'),
-    createUserForm: document.getElementById('create-user-form')
+    createUserForm: document.getElementById('create-user-form'),
+    comboCounter: document.getElementById('combo-counter'),
+    comboCount: document.getElementById('combo-count'),
+    starRating: document.getElementById('star-rating')
 };
 
 // 按钮事件
@@ -231,15 +237,15 @@ function displayWord() {
 // 检查输入
 function checkInput() {
     if (!gameState.isPlaying) return;
-    
+
     const input = elements.wordInput.value.trim().toLowerCase();
     const targetWord = gameState.words[gameState.currentWordIndex].toLowerCase();
-    
+
     // 更新键盘高亮
     if (input.length < targetWord.length) {
         highlightKey(targetWord[input.length]);
     }
-    
+
     if (input === targetWord) {
         // 正确
         playSound('correct');
@@ -247,10 +253,32 @@ function checkInput() {
         elements.feedback.className = 'feedback correct';
         gameState.score += 10 * gameState.level;
         gameState.currentWordIndex++;
-        
+        gameState.combo++;
+        gameState.mistakes = 0;
+
+        // 更新最大连击
+        if (gameState.combo > gameState.maxCombo) {
+            gameState.maxCombo = gameState.combo;
+        }
+
+        // 坦克移动动画
+        elements.tankImage.classList.add('tank-move');
+        setTimeout(() => {
+            elements.tankImage.classList.remove('tank-move');
+        }, 300);
+
+        // 正确反馈动画
+        elements.wordDisplay.classList.add('correct-animation');
+        setTimeout(() => {
+            elements.wordDisplay.classList.remove('correct-animation');
+        }, 500);
+
+        // 更新连击计数器
+        updateComboCounter();
+
         // 保存进度
         saveProgress();
-        
+
         setTimeout(() => {
             elements.feedback.textContent = '';
             elements.wordInput.value = '';
@@ -263,7 +291,18 @@ function checkInput() {
         elements.feedback.textContent = '再试一次! 💪';
         elements.feedback.className = 'feedback incorrect';
         elements.wordInput.value = '';
-        
+        gameState.combo = 0;
+        gameState.mistakes++;
+
+        // 错误反馈动画
+        elements.wordDisplay.classList.add('incorrect-animation');
+        setTimeout(() => {
+            elements.wordDisplay.classList.remove('incorrect-animation');
+        }, 400);
+
+        // 更新连击计数器
+        updateComboCounter();
+
         setTimeout(() => {
             elements.feedback.textContent = '';
         }, 1000);
@@ -274,7 +313,14 @@ function checkInput() {
 function levelComplete() {
     gameState.isPlaying = false;
     playSound('levelComplete');
-    
+
+    // 计算星级评分
+    const stars = calculateStars();
+    displayStars(stars);
+
+    // 触发庆祝动画
+    createCelebration();
+
     if (gameState.level < tankData.length) {
         // 显示下一关信息
         const nextTank = getTankData(gameState.level + 1);
@@ -294,6 +340,8 @@ function levelComplete() {
 function nextLevel() {
     gameState.level++;
     gameState.isPlaying = true;
+    gameState.combo = 0;
+    gameState.mistakes = 0;
     saveProgress();
     initLevel();
     showScreen('game');
@@ -312,12 +360,95 @@ function gameComplete() {
 function restartGame() {
     // 清除保存的进度
     localStorage.removeItem('tankTypingGameProgress');
-    
+
     document.querySelector('#game-over-screen h2').textContent = '💥 游戏结束';
     document.querySelector('#game-over-screen p').innerHTML = '最终分数: <span id="final-score">0</span><br>达到等级: <span id="final-level">1</span>';
     elements.finalScore = document.getElementById('final-score');
     elements.finalLevel = document.getElementById('final-level');
+    gameState.combo = 0;
+    gameState.mistakes = 0;
     startGame();
+}
+
+// 更新连击计数器
+function updateComboCounter() {
+    if (gameState.combo >= 3) {
+        elements.comboCounter.style.display = 'block';
+        elements.comboCount.textContent = gameState.combo;
+        elements.comboCounter.style.animation = 'none';
+        setTimeout(() => {
+            elements.comboCounter.style.animation = 'comboPulse 0.3s ease-out';
+        }, 10);
+    } else {
+        elements.comboCounter.style.display = 'none';
+    }
+}
+
+// 计算星级评分
+function calculateStars() {
+    const totalWords = gameState.currentTank.wordsPerLevel;
+    const accuracy = 1 - (gameState.mistakes / totalWords);
+    const comboBonus = gameState.maxCombo / totalWords;
+
+    let stars = 1;
+    if (accuracy >= 0.8 && comboBonus >= 0.3) stars = 2;
+    if (accuracy >= 0.9 && comboBonus >= 0.5) stars = 3;
+
+    return stars;
+}
+
+// 显示星级评分
+function displayStars(stars) {
+    const starElements = elements.starRating.querySelectorAll('.star');
+    starElements.forEach((star, index) => {
+        star.classList.remove('empty', 'animate');
+        if (index < stars) {
+            star.classList.remove('empty');
+            setTimeout(() => {
+                star.classList.add('animate');
+            }, index * 200);
+        } else {
+            star.classList.add('empty');
+        }
+    });
+}
+
+// 创建庆祝动画
+function createCelebration() {
+    const colors = ['#ffd700', '#ff6b6b', '#4ade80', '#60a5fa', '#f472b6'];
+    const container = document.body;
+
+    // 创建烟花效果
+    for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = Math.random() * window.innerWidth + 'px';
+            firework.style.top = Math.random() * window.innerHeight * 0.5 + 'px';
+            firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            container.appendChild(firework);
+
+            setTimeout(() => {
+                firework.remove();
+            }, 1000);
+        }, i * 100);
+    }
+
+    // 创建粒子效果
+    for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = '50%';
+        particle.style.top = '50%';
+        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.setProperty('--tx', (Math.random() - 0.5) * 500 + 'px');
+        particle.style.setProperty('--ty', (Math.random() - 0.5) * 500 + 'px');
+        container.appendChild(particle);
+
+        setTimeout(() => {
+            particle.remove();
+        }, 1000);
+    }
 }
 
 // 高亮键盘按键
