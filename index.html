@@ -15,7 +15,7 @@
 
         <div id="start-screen" class="screen active">
             <div class="tank-display">
-                <img class="tank-icon" src="images/panzer_i.svg" alt="Panzer I">
+                <div class="tank-icon" id="start-tank-sample" role="img" aria-label="坦克示例"></div>
                 <h2>准备好开始了吗？</h2>
                 <p>从基础键位练习开始，逐步解锁强大的二战德国坦克！</p>
                 <p style="color: #ffd700; font-size: 0.9rem;">适合10岁儿童的打字训练游戏</p>
@@ -98,11 +98,14 @@
                     <div class="key" data-key="b">B</div>
                     <div class="key" data-key="n">N</div>
                     <div class="key" data-key="m">M</div>
+                    <div class="key" data-key=",">,</div>
+                    <div class="key" data-key=".">.</div>
+                    <div class="key" data-key="/">/</div>
                 </div>
             </div>
 
             <div class="tank-display">
-                <img id="tank-image" class="tank-visual" src="" alt="Tank Image">
+                <div id="tank-image" class="tank-visual" role="img" aria-label="坦克插图"></div>
                 <div id="tank-name" class="tank-name">Panzer I</div>
                 <div id="tank-description" class="tank-description">轻型坦克 - 入门级</div>
                 <div id="finger-hint" class="finger-hint"></div>
@@ -146,6 +149,7 @@
     </div>
 
     <script src="tank-data.js"></script>
+    <script src="tank-renderer.js"></script>
     <script src="game.js"></script>
 </body>
 </html>

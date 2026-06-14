@@ -13,3 +13,10 @@ Thumbs.db
 
 # Log files
 *.log
+
+# Claude Code 会话状态
+.claude/
+
+# 临时产物
+tools/preview/
+tools/contact-sheet.html

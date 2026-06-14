@@ -37,40 +37,50 @@ if (!isLocalStorageAvailable()) {
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 function playSound(type) {
+    const now = audioContext.currentTime;
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
-    
+
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
-    
+
+    // 包络规则：exponentialRamp 不能以 0 为目标/起点，故起点用 0.0001、终点用 0.001；
+    // osc.stop 排在 gain 降到 0.001 之后，避免硬切断产生的爆音。
     switch(type) {
         case 'correct':
-            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
-            oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialDecayTo = 0.01;
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.2);
+            oscillator.frequency.setValueAtTime(523.25, now); // C5
+            oscillator.frequency.setValueAtTime(659.25, now + 0.1); // E5
+            gainNode.gain.setValueAtTime(0.0001, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.3, now + 0.02);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+            oscillator.start(now);
+            oscillator.stop(now + 0.22);
             break;
         case 'incorrect':
-            oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.15);
+            oscillator.frequency.setValueAtTime(200, now);
+            gainNode.gain.setValueAtTime(0.0001, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.3, now + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+            oscillator.start(now);
+            oscillator.stop(now + 0.17);
             break;
         case 'levelComplete':
-            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
-            oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.15);
-            oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.3);
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.5);
+            oscillator.frequency.setValueAtTime(523.25, now); // C5
+            oscillator.frequency.setValueAtTime(659.25, now + 0.15); // E5
+            oscillator.frequency.setValueAtTime(783.99, now + 0.3); // G5
+            gainNode.gain.setValueAtTime(0.0001, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.3, now + 0.03);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+            oscillator.start(now);
+            oscillator.stop(now + 0.52);
             break;
         case 'type':
-            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.05);
+            oscillator.frequency.setValueAtTime(800, now);
+            gainNode.gain.setValueAtTime(0.0001, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.1, now + 0.005);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+            oscillator.start(now);
+            oscillator.stop(now + 0.07);
             break;
     }
 }
@@ -126,6 +136,14 @@ elements.userSelect.addEventListener('change', selectUser);
 // 初始化用户列表
 loadUsers();
 updateUserSelect();
+
+// 开始页示例坦克
+(function initStartSample() {
+    const sample = document.getElementById('start-tank-sample');
+    if (sample && window.renderTankSVG && typeof tankData !== 'undefined' && tankData.length) {
+        sample.innerHTML = renderTankSVG(tankData[0]);
+    }
+})();
 
 // 输入事件
 elements.wordInput.addEventListener('input', (e) => {
@@ -206,8 +224,8 @@ function updateUI() {
     elements.currentTank.textContent = gameState.currentTank.name;
     elements.progress.textContent = `${gameState.currentWordIndex}/${gameState.currentTank.wordsPerLevel}`;
     
-    // 显示真实坦克图片
-    elements.tankImage.src = gameState.currentTank.icon;
+    // 显示真实坦克图片（参数化 SVG 渲染）
+    elements.tankImage.innerHTML = renderTankSVG(gameState.currentTank);
     elements.tankName.textContent = gameState.currentTank.name;
     elements.tankDescription.textContent = gameState.currentTank.description;
     
@@ -326,7 +344,7 @@ function levelComplete() {
         const nextTank = getTankData(gameState.level + 1);
         elements.newTankInfo.innerHTML = `
             <h3>🎖️ 新坦克解锁!</h3>
-            <p><strong><img src="${nextTank.icon}" style="width: 50px; height: auto; vertical-align: middle; margin-right: 10px;">${nextTank.name}</strong></p>
+            <p><strong><span style="display:inline-block;width:60px;vertical-align:middle;margin-right:10px;">${renderTankSVG(nextTank, {width:60, height:35, caption:false})}</span>${nextTank.name}</strong></p>
             <p>${nextTank.description}</p>
         `;
         showScreen('levelComplete');
